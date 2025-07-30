@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini Candy Crush</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">🍭 Mini Crush 🍭</h1>
+      <div class="subtitle">
+        <div class="score">Score: <span id="score">0</span></div>
+        <div class="difficulty">
+          <select name="difficulty" id="difficulty">
+            <option value="easy">Easy - 100 moves</option>
+            <option value="medium">Medium - 50 moves</option>
+            <option value="hard">Hard - 10 moves</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid" id="grid"></div>
+
+      <div class="movesLeft"></div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>

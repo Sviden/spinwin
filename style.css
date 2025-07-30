@@ -1,0 +1,166 @@
+body {
+  font-family: sans-serif;
+  background: #1e1e1e;
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 360px;
+  margin: auto;
+  padding: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, 50px);
+  margin: 20px auto;
+  justify-content: space-evenly;
+}
+
+.title {
+  font-size: 26px;
+  letter-spacing: 0.2ch;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px;
+  font-size: 18px;
+  letter-spacing: 0.2ch;
+  .difficulty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin: 20px auto; */
+    padding: 7px 10px;
+    background: linear-gradient(to right, #30713d61, #078644);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+  }
+
+  .difficulty select {
+    font-size: 16px;
+    padding: 5px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: white;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    appearance: none;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+
+  .difficulty select:hover {
+    background-color: #f0f0f0;
+  }
+
+  .difficulty select:focus {
+    box-shadow: 0 0 0 2px #f8b50088;
+  }
+}
+
+.candy {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #333;
+  cursor: pointer;
+  user-select: none;
+  border: 2px solid transparent;
+  margin: 2px;
+}
+
+.candy.matched {
+  background: #40712f91;
+  border: 2px solid #aeae841c;
+}
+
+.candy:hover {
+  background: #444;
+  transform: scale(1.05);
+  border: 2px solid #aeae841c;
+}
+
+.candy.matched:hover {
+  background: #55854591;
+}
+
+.particle {
+  font-size: 15px;
+  z-index: 999;
+  position: absolute;
+  will-change: transform, opacity;
+}
+
+.noMovesAlert {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 20px;
+  border: 2px solid rgba(0, 0, 0, 0.966);
+}
+
+.winMessage,
+.loseMessage {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: white;
+  background: #59ad5cb6;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  z-index: 999;
+  pointer-events: none;
+  border: 2px solid #032005d0;
+}
+
+.loseMessage {
+  background: #8c3722b6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.emojiRain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 998;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+.restartBtn {
+  margin-top: 20px;
+  padding: 7px 20px;
+  font-size: 16px;
+  background-color: #0e4019;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.752);
+  border-radius: 8px;
+  cursor: pointer;
+  pointer-events: auto; /* ✅ ensure it can receive clicks */
+}
