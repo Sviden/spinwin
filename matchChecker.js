@@ -2,6 +2,8 @@ import { explodeEmojiAt } from "./animation.js";
 import { updateScore } from "./utils.js";
 import { gravityAndRefill } from "./swappAndGravity.js";
 import { width } from "./constants.js";
+import { checkWinCondition } from "./utils.js";
+import { showWinMessage } from "./animation.js";
 
 export function checkForMatches(candies) {
   const matched = checkRowMatches(candies) || checkColumnMatches(candies);
@@ -9,18 +11,20 @@ export function checkForMatches(candies) {
   if (!matched) {
     hasPossibleMoves(candies);
   }
+  if (checkWinCondition(candies)) {
+    showWinMessage();
+    return;
+  }
   return matched;
 }
 
 export function checkRowMatches(candies) {
   let found = false;
 
-  //iterate through each row
   for (let i = 0; i < width * width; i += width) {
     let currentEmoji = candies[i].textContent;
     let matchingEmojies = [];
 
-    //iterate through each cell in the row
     for (let j = 0; j < width; j++) {
       const cellIndex = i + j;
       if (
@@ -45,12 +49,10 @@ export function checkRowMatches(candies) {
 export function checkColumnMatches(candies) {
   let found = false;
 
-  //iterate through each column
   for (let i = 0; i < width; i++) {
     let currentEmoji = candies[i].textContent;
     let matchingEmojies = [];
 
-    //iterate through each cell in the column
     for (let j = 0; j < width; j++) {
       const cellIndex = j * width + i;
       if (
@@ -66,7 +68,6 @@ export function checkColumnMatches(candies) {
       }
     }
 
-    // Check for matches at the end of the column
     found = handleMatches(candies, matchingEmojies, currentEmoji, found);
   }
 
@@ -89,30 +90,28 @@ function handleMatches(candies, matchingEmojies, currentEmoji, found) {
 
 export function hasPossibleMoves(candies) {
   for (let i = 0; i < width * width; i++) {
-    // Check right neighbor
     if (i % width < width - 1) {
       const rightIndex = i + 1;
       swapText(i, rightIndex, candies);
 
       if (createsMatch(i, candies) || createsMatch(rightIndex, candies)) {
-        swapText(i, rightIndex, candies); // revert
+        swapText(i, rightIndex, candies);
         return true;
       }
 
-      swapText(i, rightIndex, candies); // revert
+      swapText(i, rightIndex, candies);
     }
 
-    // Check bottom neighbor
     if (i + width < width * width) {
       const bottomIndex = i + width;
       swapText(i, bottomIndex, candies);
 
       if (createsMatch(i, candies) || createsMatch(bottomIndex, candies)) {
-        swapText(i, bottomIndex, candies); // revert
+        swapText(i, bottomIndex, candies);
         return true;
       }
 
-      swapText(i, bottomIndex, candies); // revert
+      swapText(i, bottomIndex, candies);
     }
   }
 
@@ -126,7 +125,6 @@ function createsMatch(index, candies) {
 
   if (emoji === "") return false;
 
-  // Check horizontal
   let matchCount = 1;
   for (let offset = 1; col + offset < width; offset++) {
     if (candies[index + offset].textContent === emoji) matchCount++;
@@ -138,7 +136,6 @@ function createsMatch(index, candies) {
   }
   if (matchCount >= 3) return true;
 
-  // Check vertical
   matchCount = 1;
   for (let offset = 1; row + offset < width; offset++) {
     if (candies[index + offset * width].textContent === emoji) matchCount++;

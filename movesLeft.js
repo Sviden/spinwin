@@ -1,21 +1,18 @@
 const movesEl = document.createElement("div");
 movesEl.className = "movesLeft";
 
-// Internal state management
 let currentMoves = 0;
 
 export function setInitialMoves(initialMoves) {
   currentMoves = initialMoves;
   updateMovesUI();
 
-  // Append element if it doesn't exist
   if (!document.querySelector(".movesLeft .movesLeft")) {
     document.querySelector(".movesLeft").appendChild(movesEl);
   }
 
   const difficultySelect = document.getElementById("difficulty");
 
-  // Remove existing listener if any
   const newSelect = difficultySelect.cloneNode(true);
   difficultySelect.parentNode.replaceChild(newSelect, difficultySelect);
 

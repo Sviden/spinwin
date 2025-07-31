@@ -7,6 +7,7 @@ import {
   noMovesAlert,
   reshuffleCandiesWithAnimation,
   showWinMessage,
+  startFloatingBackground,
 } from "./animation.js";
 import { setInitialMoves } from "./movesLeft.js";
 
@@ -14,14 +15,14 @@ const candies = [];
 let dragStartId = null;
 
 createBoard(candies);
-setInitialMoves(100);
+setInitialMoves(10);
 runInitialMatchLoop();
+startFloatingBackground();
 
 // Drag start
 candies.forEach((candy) => {
   candy.addEventListener("mousedown", () => {
     dragStartId = parseInt(candy.getAttribute("data-id"));
-    // candy.style.outline = "2px solid gold";
   });
 
   candy.addEventListener("touchstart", (e) => {
@@ -85,9 +86,8 @@ export function runInitialMatchLoop() {
       }
       setTimeout(() => {
         gravityAndRefill(candies);
-        // Keep checking for new matches after refill
         setTimeout(loop, 300);
-      }, 500); // Wait for explosion animation to finish
+      }, 500);
     } else {
       if (!hasPossibleMoves(candies)) {
         noMovesAlert(() => {

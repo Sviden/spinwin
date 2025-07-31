@@ -1,6 +1,6 @@
 body {
   font-family: sans-serif;
-  background: #1e1e1e;
+  background: #1b1a1af8;
   color: white;
   text-align: center;
   margin: 0;
@@ -65,7 +65,7 @@ body {
   }
 
   .difficulty select:focus {
-    box-shadow: 0 0 0 2px #f8b50088;
+    box-shadow: 0 0 0 2px #18120388;
   }
 }
 
@@ -78,10 +78,14 @@ body {
   align-items: center;
   justify-content: center;
   background: #333;
-  cursor: pointer;
+  cursor: grab;
   user-select: none;
   border: 2px solid transparent;
   margin: 2px;
+}
+
+.candy:active {
+  cursor: grabbing;
 }
 
 .candy.matched {
@@ -162,5 +166,14 @@ body {
   border: 2px solid rgba(255, 255, 255, 0.752);
   border-radius: 8px;
   cursor: pointer;
-  pointer-events: auto; /* ✅ ensure it can receive clicks */
+  pointer-events: auto;
+}
+
+.backgroundEmoji {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.15;
+  z-index: -1;
 }
