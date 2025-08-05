@@ -17,10 +17,12 @@ body {
 
 .grid {
   max-width: 100%;
-  min-width: 360px;
   display: grid;
   margin: 0px auto;
   justify-content: space-evenly;
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 }
 
 .title {
@@ -86,8 +88,8 @@ body {
   border: 2px solid transparent;
   margin: 2px;
   @media (max-width: 500px) {
-    width: 35px;
-    height: 35px;
+    width: 45px;
+    height: 45px;
     font-size: 25px;
   }
 }
