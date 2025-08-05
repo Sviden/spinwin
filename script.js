@@ -2,22 +2,33 @@ import { checkForMatches, hasPossibleMoves } from "./matchChecker.js";
 import { gravityAndRefill, swapCandies } from "./swappAndGravity.js";
 import { areAdjacent, checkWinCondition } from "./utils.js";
 import { createBoard } from "./board.js";
-import { width, emojis } from "./constants.js";
+import { width, emojis, level } from "./constants.js";
 import {
   noMovesAlert,
   reshuffleCandiesWithAnimation,
   showWinMessage,
   startFloatingBackground,
+  textAnimation,
 } from "./animation.js";
 import { setInitialMoves } from "./movesLeft.js";
+import { createGridHeader } from "./gridHeader.js";
 
 const candies = [];
 let dragStartId = null;
+let gameWon = false; // Add game state flag to prevent multiple win messages
 
 createBoard(candies);
-setInitialMoves(10);
+createGridHeader();
+setInitialMoves();
 runInitialMatchLoop();
 startFloatingBackground();
+
+//set text animation
+const levelElement = document.querySelector(".level");
+const title = document.querySelector(".title");
+levelElement.textContent = `Level ${level}`;
+textAnimation(levelElement);
+textAnimation(title);
 
 // Drag start
 candies.forEach((candy) => {
@@ -79,15 +90,19 @@ export function runInitialMatchLoop() {
   const loop = () => {
     const matched = checkForMatches(candies);
 
+    // Check win condition after matches are processed
+    if (checkWinCondition(candies) && !gameWon) {
+      gameWon = true; // Set flag to prevent multiple calls
+      showWinMessage();
+      return;
+    }
+
     if (matched) {
-      if (checkWinCondition(candies)) {
-        showWinMessage();
-        return;
-      }
       setTimeout(() => {
         gravityAndRefill(candies);
+        // Keep checking for new matches after refill
         setTimeout(loop, 300);
-      }, 500);
+      }, 500); // Wait for explosion animation to finish
     } else {
       if (!hasPossibleMoves(candies)) {
         noMovesAlert(() => {

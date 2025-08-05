@@ -1,9 +1,12 @@
+import { colorTextAnimation } from "./animation.js";
+
 const scoreEl = document.getElementById("score");
 let score = 0;
 
 export function updateScore(amount) {
   score += amount;
   scoreEl.textContent = score;
+  colorTextAnimation(scoreEl);
 }
 
 export function areAdjacent(id1, id2, width) {

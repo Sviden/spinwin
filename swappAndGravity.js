@@ -2,7 +2,11 @@ import { width, emojis } from "./constants.js";
 import { checkForMatches } from "./matchChecker.js";
 import { runInitialMatchLoop } from "./script.js";
 import { decrementMoves, isGameOver } from "./movesLeft.js";
-import { showLoseMessage } from "./animation.js";
+import {
+  animateGridHeader,
+  refillAnimation,
+  showLoseMessage,
+} from "./animation.js";
 
 export function swapCandies(id1, id2, candies) {
   const candy1 = candies[id1];
@@ -51,6 +55,7 @@ export function swapCandies(id1, id2, candies) {
 }
 
 export function gravityAndRefill(candies) {
+  const movedCandies = [];
   for (let i = 0; i < width; i++) {
     let emptyRowIndex = (width - 1) * width + i;
 
@@ -58,10 +63,21 @@ export function gravityAndRefill(candies) {
       const currentIndex = j * width + i;
 
       if (candies[currentIndex].textContent !== "") {
+        if (emptyRowIndex !== currentIndex) {
+          movedCandies.push({
+            element: candies[currentIndex],
+            fromRow: j,
+            toRow: Math.floor(emptyRowIndex / width),
+          });
+        }
+
+        // Move the content
         candies[emptyRowIndex].textContent = candies[currentIndex].textContent;
+
         if (emptyRowIndex !== currentIndex) {
           candies[currentIndex].textContent = "";
         }
+
         emptyRowIndex -= width;
       }
     }
@@ -71,6 +87,8 @@ export function gravityAndRefill(candies) {
     if (candies[i].textContent === "") {
       const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
       candies[i].textContent = randomEmoji;
+      refillAnimation(movedCandies, candies);
     }
   }
+  refillAnimation(movedCandies, candies);
 }

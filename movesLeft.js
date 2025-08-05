@@ -1,10 +1,12 @@
-const movesEl = document.createElement("div");
+import { colorTextAnimation } from "./animation.js";
+
+const movesEl = document.createElement("h4");
 movesEl.className = "movesLeft";
 
-let currentMoves = 0;
+let currentMoves = 10;
 
-export function setInitialMoves(initialMoves) {
-  currentMoves = initialMoves;
+export function setInitialMoves() {
+  //   currentMoves = initialMoves;
   updateMovesUI();
 
   if (!document.querySelector(".movesLeft .movesLeft")) {
@@ -28,10 +30,7 @@ export function setInitialMoves(initialMoves) {
 export function decrementMoves() {
   currentMoves--;
   updateMovesUI();
-  return currentMoves;
-}
-
-export function getMovesLeft() {
+  colorTextAnimation(movesEl);
   return currentMoves;
 }
 

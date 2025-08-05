@@ -1,19 +1,19 @@
 import { explodeEmojiAt } from "./animation.js";
 import { updateScore } from "./utils.js";
 import { gravityAndRefill } from "./swappAndGravity.js";
-import { width } from "./constants.js";
+import { level, width } from "./constants.js";
 import { checkWinCondition } from "./utils.js";
 import { showWinMessage } from "./animation.js";
 
 export function checkForMatches(candies) {
   const matched = checkRowMatches(candies) || checkColumnMatches(candies);
   matched && gravityAndRefill(candies);
-  if (!matched) {
-    hasPossibleMoves(candies);
-  }
   if (checkWinCondition(candies)) {
     showWinMessage();
     return;
+  }
+  if (!matched) {
+    hasPossibleMoves(candies);
   }
   return matched;
 }
@@ -89,63 +89,62 @@ function handleMatches(candies, matchingEmojies, currentEmoji, found) {
 }
 
 export function hasPossibleMoves(candies) {
-  for (let i = 0; i < width * width; i++) {
+  const totalCells = width * width;
+
+  for (let i = 0; i < totalCells; i++) {
+    const right = i + 1;
+    const down = i + width;
+
     if (i % width < width - 1) {
-      const rightIndex = i + 1;
-      swapText(i, rightIndex, candies);
-
-      if (createsMatch(i, candies) || createsMatch(rightIndex, candies)) {
-        swapText(i, rightIndex, candies);
-        return true;
-      }
-
-      swapText(i, rightIndex, candies);
+      if (wouldCreateMatch(i, right, candies)) return true;
     }
 
-    if (i + width < width * width) {
-      const bottomIndex = i + width;
-      swapText(i, bottomIndex, candies);
-
-      if (createsMatch(i, candies) || createsMatch(bottomIndex, candies)) {
-        swapText(i, bottomIndex, candies);
-        return true;
-      }
-
-      swapText(i, bottomIndex, candies);
+    if (down < totalCells) {
+      if (wouldCreateMatch(i, down, candies)) return true;
     }
   }
 
   return false;
 }
 
+function wouldCreateMatch(id1, id2, candies) {
+  // Simulate swap
+  swapText(id1, id2, candies);
+  const match = createsMatch(id1, candies) || createsMatch(id2, candies);
+  swapText(id1, id2, candies); // Revert
+  return match;
+}
+
 function createsMatch(index, candies) {
   const row = Math.floor(index / width);
   const col = index % width;
   const emoji = candies[index].textContent;
+  if (!emoji) return false;
 
-  if (emoji === "") return false;
-
-  let matchCount = 1;
+  // Horizontal check
+  let horizontal = 1;
   for (let offset = 1; col + offset < width; offset++) {
-    if (candies[index + offset].textContent === emoji) matchCount++;
+    if (candies[index + offset].textContent === emoji) horizontal++;
     else break;
   }
   for (let offset = 1; col - offset >= 0; offset++) {
-    if (candies[index - offset].textContent === emoji) matchCount++;
+    if (candies[index - offset].textContent === emoji) horizontal++;
     else break;
   }
-  if (matchCount >= 3) return true;
+  if (horizontal >= 3) return true;
 
-  matchCount = 1;
+  // Vertical check
+  let vertical = 1;
   for (let offset = 1; row + offset < width; offset++) {
-    if (candies[index + offset * width].textContent === emoji) matchCount++;
+    if (candies[index + offset * width].textContent === emoji) vertical++;
     else break;
   }
   for (let offset = 1; row - offset >= 0; offset++) {
-    if (candies[index - offset * width].textContent === emoji) matchCount++;
+    if (candies[index - offset * width].textContent === emoji) vertical++;
     else break;
   }
-  return matchCount >= 3;
+
+  return vertical >= 3;
 }
 
 function swapText(id1, id2, candies) {
